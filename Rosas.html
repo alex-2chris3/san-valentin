@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🌻💖</title>
+<style>
+/* Importamos una fuente más romántica */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffdde1, #ff9a9e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Contenedor del girasol */
+.sunflower {
+    position: relative;
+    width: 220px;
+    height: 220px;
+}
+
+/* Centro del girasol con efecto brillante */
+.center {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, #010000, #010000);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 179, 0, 0.8);
+    z-index: 2;
+    animation: brillo 1.5s infinite alternate;
+}
+
+/* Animación para el brillo del centro */
+@keyframes brillo {
+    0% { box-shadow: 0 0 8px rgba(255, 179, 0, 0.5); }
+    100% { box-shadow: 0 0 15px rgba(255, 179, 0, 1); }
+}
+
+/* Pétalos con efecto de aparición y sombra */
+.petal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 90px;
+    height: 45px;
+    background: #f39c12;
+    border-radius: 50%;
+    transform-origin: 0% 50%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Contenedor del confeti */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Confeti */
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: red;
+    opacity: 0.8;
+    animation: fall linear infinite;
+}
+
+/* Mensaje con efecto romántico */
+.message {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    color: #d63384;
+    font-family: 'Pacifico', cursive;
+    z-index: 2;
+    animation: latido 1.5s infinite;
+}
+
+/* Animación de latido para el mensaje */
+@keyframes latido {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Animación para el confeti */
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+
+/* Corazones flotando */
+@keyframes corazones {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
+.corazon {
+    position: absolute;
+    color: #ff4081;
+    font-size: 20px;
+    animation: corazones linear infinite;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Contenedor del confeti -->
+<div class="confetti-container"></div>
+
+<!-- Estructura del girasol -->
+<div class="sunflower">
+    <div class="center"></div>
+</div>
+
+<!-- Mensaje final -->
+<div class="message">
+    💖 Te prometo hacerte la niña más feliz del mundo 💖
+</div>
+
+<!-- JavaScript para crear el girasol dinámicamente, el confeti y los corazones -->
+<script>
+const sunflower = document.querySelector('.sunflower');
+const confettiContainer = document.querySelector('.confetti-container');
+let numPetals = 12; // Número de pétalos
+let angleStep = 360 / numPetals; // Espaciado de los pétalos
+
+function createPetal(index) {
+    let petal = document.createElement('div');
+    petal.classList.add('petal');
+    
+    let angle = index * angleStep;
+    petal.style.transform = `rotate(${angle}deg) translateX(70px)`;
+    
+    sunflower.appendChild(petal);
+
+    // Efecto de aparición y rotación sutil
+    setTimeout(() => {
+        petal.style.opacity = 1;
+        petal.style.transform += ' rotate(10deg)';
+    }, index * 200);
+}
+
+// Crear pétalos progresivamente
+for (let i = 0; i < numPetals; i++) {
+    setTimeout(() => {
+        createPetal(i);
+    }, i * 200);
+}
+
+// Función para crear confeti
+const colors = ['#e74c3c', '#8e44ad', '#3498db', '#27ae60', '#f1c40f', '#e67e22'];
+
+function createConfetti() {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    
+    const size = Math.random() * 10 + 5;
+    confetti.style.width = size + 'px';
+    confetti.style.height = size + 'px';
+    
+    confetti.style.left = Math.random() * window.innerWidth + 'px';
+    
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    
+    const duration = Math.random() * 3 + 2;
+    confetti.style.animationDuration = duration + 's';
+    
+    confetti.style.animationDelay = Math.random() * 5 + 's';
+    
+    confettiContainer.appendChild(confetti);
+    
+    confetti.addEventListener('animationend', () => {
+        confetti.remove();
+    });
+}
+
+// Generar confeti continuamente
+setInterval(createConfetti, 200);
+
+// Función para crear corazones flotando
+function crearCorazon() {
+    const corazon = document.createElement("div");
+    corazon.classList.add("corazon");
+    corazon.innerHTML = "❤️";
+    document.body.appendChild(corazon);
+
+    const tamaño = Math.random() * 30 + 10;
+    corazon.style.fontSize = tamaño + "px";
+    corazon.style.left = Math.random() * 100 + "vw";
+    corazon.style.animationDuration = Math.random() * 3 + 2 + "s";
+
+    setTimeout(() => {
+        corazon.remove();
+    }, 3000);
+}
+
+// Generar corazones cada cierto tiempo
+setInterval(crearCorazon, 600);
+</script>
+
+</body>
+</html>
